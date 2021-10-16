@@ -1,0 +1,52 @@
+---
+title: "Story Board"
+output: 
+  flexdashboard::flex_dashboard:
+    storyboard: true
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(readr)
+library(dplyr)
+library(DT)
+library(leaflet)
+```
+
+```{r}
+earthquake <- read.csv("flex/earthquakedata.csv")
+```
+### Data
+
+```{r}
+earthquake %>%
+  filter(yr==1995) %>%
+  datatable()
+```
+
+
+***
+
+Dataset de los terremotos que ocurrieron en el año **1995** en todo el mundo.
+
+
+### Terremotos mayores
+
+```{r}
+earthquake %>%
+  filter(yr==1995, mag>6) %>%
+  leaflet() %>%
+  addTiles() %>%
+  addMarkers(lng= ~lon,
+             lat = ~lat,
+             label = ~mag)
+```
+
+***
+<h1> Mi heading 1</h1>
+Los terremotos de más de 6 grados alrededor del mundo.
+
+- Chile
+- México
+- Japón
+

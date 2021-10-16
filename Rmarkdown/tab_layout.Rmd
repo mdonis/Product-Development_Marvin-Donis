@@ -1,0 +1,45 @@
+---
+title: "Tabs Layout"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+---
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(ggplot2)
+library(dplyr)
+```
+
+## 
+------------------------------
+
+### Dataset de Iris
+
+```{r}
+knitr::kable(iris)
+```
+
+## {.tabset}
+
+---------------
+
+### Boxplot Species contra Sepal Width
+
+```{r}
+iris %>% 
+  ggplot(aes(x=Species, y=Sepal.Width,fill=Species))+
+  geom_boxplot()
+  
+```
+
+
+### Histograma
+
+```{r}
+iris %>% 
+  ggplot(aes(x=Sepal.Width, y=..density.., fill=Species))+
+  geom_histogram()+
+  geom_density()+
+  facet_wrap(.~Species)
+```

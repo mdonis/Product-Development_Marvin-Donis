@@ -1,0 +1,46 @@
+---
+title: "Column Layout"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(ggplot2)
+library(dplyr)
+```
+
+## Column
+------------------------------
+
+### Dataset de Iris
+
+```{r}
+knitr::kable(iris)
+```
+
+
+## Column
+---------------
+
+### Boxplot Species contra Sepal Width
+
+```{r}
+iris %>% 
+  ggplot(aes(x=Species, y=Sepal.Width,fill=Species))+
+  geom_boxplot()
+  
+```
+
+
+### row2
+
+```{r}
+iris %>% 
+  ggplot(aes(x=Sepal.Width, y=..density.., fill=Species))+
+  geom_histogram()+
+  geom_density()+
+  facet_wrap(.~Species)
+```

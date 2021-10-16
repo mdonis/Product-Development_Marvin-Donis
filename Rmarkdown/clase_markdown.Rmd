@@ -1,0 +1,237 @@
+---
+title: "Clase Markdown"
+author: "mdonis"
+date: "6/10/2021"
+output: html_document
+---
+# Texto
+## Italicas y Negritas
+
+* La palabra **hola** esta en negritas.
+  * Utilizamos `**hola**`
+* La palabra *mundo* esta en italicas.
+  * Utilizamos `*mundo*`
+  
+## Sub y Supra indice
+
+* La formula quimica del agua es H~2~0 y la del carbonato de sodio es Na~2~CO~3~
+  * `H~2~0` = H~2~0
+  * `Na~2~CO~3~` = Na~2~CO~3~
+* Tambien podemos incluir texto
+  * Precio~dia~ = `Precio~dia~`
+  * No puede incluir espacio
+* Tambien podemos hacer exponentes X^2^
+  * x^2^ = `x^2^`
+  
+## inline Code
+Codigo `x <- x+1`
+
+## Hiperlinks
+* Para crear un link usamos `[Text](Link)`
+  * Ejmeplo: [Academatica](https://www.youtube.com/academatica)
+  
+  
+# imagenes
+
+Para agregar imagenes usamos `![Text](path a imagen)`
+
+![](dd.png)
+
+![Dilbert on data quality](dd.png)
+
+# Referencias
+
+Para agregar pie de pagina utilizamos `^[]`
+
+Para este demo usaremos como referencia el libro *R Markdown: The Definitive Guide*^[https://bookdown.org/yihui/rmarkdown/]
+
+![Dilbert on data quality^[Imagen descargada sin permiso de https://www.pinterest.com/pin/167688786102533739/]](dd.png)
+
+# Encabezados y Sub Encabezados
+
+* `#` Heading 1
+* `##` Heading 2
+* `###` Heading 3
+
+# listas
+## listas no ordenadas
+
+Podemos usar `-`, `+` o `*`
+
+```
++ item 1
+  + item 1.1
+  + item 1.2
++ item 2
+```
+
+
++ item 1
+   + item 1.1
+   + item 1.2
++ item 2
+
+## Listas Ordenadas
+
+```
+1. Item 1
+   * item 1.1
+2. Item 2
+   1. item 2.1
+   2. item 2.2
+```
+
+
+1. Item 1
+   * item 1.1
+2. Item 2
+   1. item 2.1
+   2. item 2.2
+   
+   
+# Quotes
+```
+> In God we trust, all others bring data.
+>
+> --- W Edwards Deming
+```
+
+> "In God we trust, all others bring data."
+>
+> --- W Edwards Deming
+
+>“Keep away from people who try to belittle your ambitions. Small people always do that, but the really great make you feel that you, too, can become great.”
+>
+> --- Mark Twain
+
+# Plain Code Chunks
+
+Despues de 3 backticks se puede escribir chunk de codigo
+
+```sql
+SELECT *
+FROM schema.table
+WHERE id > 100
+ORDER BY date
+LIMIT 10
+```
+
+# Expresiones matematica
+
+`$\int_a^b e^x dx = e^x+C$` inline
+
+
+$\int_a^b e^x dx = e^x+C$
+
+`$$\int_a^b e^x dx = e^x+C$$`
+$$\int_a^b e^x dx = e^x+C$$
+
+```
+$$X = \begin{bmatrix}1 & x_{1}\\
+1 & x_{2}\\
+1 & x_{3}
+\end{bmatrix}$$
+```
+$$X = \begin{bmatrix}1 & x_{1}\\
+1 & x_{2}\\
+1 & x_{3}
+\end{bmatrix}$$
+
+```
+$$\Theta = \begin{pmatrix}\alpha & \beta\\
+\gamma & \delta
+\end{pmatrix}$$
+```
+
+$$\Theta = \begin{pmatrix}\alpha & \beta\\
+\gamma & \delta
+\end{pmatrix}$$
+
+Todas las ecuaciones se escriben usando Latex. Es de mucha utilidad este generador de latex. 
+
+[Generador de Latex](https://www.codecogs.com/latex/eqneditor.php)
+
+
+# Chunks de codigo
+
+`ctrl + alt + i`
+
+```{r cars, paged.print=TRUE}
+mtcars
+```
+
+
+Las variables se mantienen entre chunks.
+
+```{r}
+x <- sample(letters,replace=TRUE,size=10)
+```
+
+```{r}
+print(x)
+```
+
+## Graficas
+
+```{r}
+plot(cars)
+```
+
+
+# Python
+Usa la libreria [reticulate](https://rstudio.github.io/reticulate/)
+
+```{r}
+library(reticulate)
+```
+
+
+```{python}
+x = 42 * 2
+print(x)
+```
+
+
+Instalando librerias de python `py_install("pandas")`
+
+
+```{python,include=TRUE}
+import pandas
+df_pandas = pandas.read_csv("flex/earthquakedata.csv")
+df_pandas.head()
+```
+```{r}
+library(ggplot2)
+library(dplyr)
+py$df_pandas %>% 
+  ggplot(aes(x=dep,y=mag))+
+  geom_point()
+```
+
+
+# SQL
+
+```{r}
+library(odbc)
+sort(unique(odbcListDrivers()[[1]]))
+```
+```{r}
+con <- dbConnect(odbc(), 
+                 Driver = "ODBC Driver 17 for SQL Server", 
+                 Server = ".", 
+                 Database = "kwplot", 
+                 Trusted_Connection = "yes")
+```
+
+
+```{sql connection=con}
+SELECT TOP 2 *
+FROM kw
+ORDER BY Date DESC
+```
+
+
+```{r}
+dbDisconnect(con)
+```
+

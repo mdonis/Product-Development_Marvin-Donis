@@ -1,0 +1,8 @@
+Verificar si el puerto está desocupado
+netstat -na | Select-String "8080"
+
+ICD Integration Continous Deployment
+
+docker-compose stop (detiene el contenedor pero no elimina nada)
+
+fontawesome (iconos)

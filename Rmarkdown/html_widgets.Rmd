@@ -1,0 +1,84 @@
+---
+title: "HTML Widgets"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(readr)
+library(dplyr)
+library(leaflet)
+library(DT)
+library(crosstalk)
+```
+
+
+```{r}
+quake <- read_csv("flex/earthquakedata.csv")
+```
+
+
+# leaflet
+
+##
+
+### Tabla
+
+```{r}
+quake %>%
+  filter(yr == 1995) %>%
+  datatable()
+```
+
+
+### Mapa
+
+```{r}
+quake %>%
+  filter(yr == 1995) %>%
+  leaflet() %>%
+  addTiles() %>%
+  addMarkers(ln = ~lon,
+             lat = ~lat,
+             label = ~mag)
+```
+
+
+# Crosstalk
+
+```{r}
+shared_quake <- SharedData$new(quake %>% filter(yr > 2000))
+```
+
+
+##
+
+
+### {data-width=400}
+```{r}
+filter_slider('mag','Magnitud',shared_quake,step = 0.1,column = ~mag)
+filter_select('yr', 'Año', shared_quake, group = ~yr, multiple = FALSE)
+```
+
+###
+
+```{r}
+shared_quake %>%
+  datatable()
+```
+
+
+###
+
+```{r}
+shared_quake %>%
+  leaflet() %>%
+  addTiles() %>%
+  addMarkers(ln = ~lon,
+             lat = ~lat,
+             label = ~mag)
+```
+

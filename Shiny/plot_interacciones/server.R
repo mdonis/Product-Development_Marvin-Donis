@@ -18,14 +18,26 @@ shinyServer(function(input, output) {
       ggtitle('Precio de Diamantes por Kilate')
   })
   
+  # gráfica interactiva de colores
+  selected <- reactiveVal(rep(FALSE, nrow(mtcars)))
   
-  
-  output$plot_click_option <- renderPlot({
-    plot(mtcars$wt, mtcars$mpg, xlab='wt', ylab='Millas por Galón',pch = 19)
-    f <- brushedPoints(mtcars, input$mouse_brush,xvar='wt',yvar='mpg')
-    points(f$wt, f$mpg, col = 'green', pch = 19)
+  observeEvent(input$mouse_brush, {
+    brushed <- brushedPoints(mtcars, input$mouse_brush, allRows = TRUE)$selected_
+    selected(brushed | selected())
+  })
+  observeEvent(input$plot_reset, {
+    selected(rep(FALSE, nrow(mtcars)))
   })
   
+  output$plot_click_option <- renderPlot({
+    mtcars$sel <- selected()
+    ggplot(mtcars, aes(wt, mpg)) + 
+      geom_point(aes(colour = sel)) +
+      scale_colour_discrete(limits = c("TRUE", "FALSE"))
+  }, res = 96)
+  
+  
+  # datos de cursor y tabla
   output$click_data <- renderPrint({
     list(
       click_xy = c(input$clk$x, input$clk$y),
@@ -39,8 +51,9 @@ shinyServer(function(input, output) {
   
   
   output$mtcars_tbl <- renderTable({
-    #df <- nearPoints(mtcars, input$mouse_hover, xvar='wt', yvar='mpg')
-    df <- brushedPoints(mtcars, input$mouse_brush,xvar='wt',yvar='mpg')
+    a <- nearPoints(mtcars, input$clk, xvar='wt', yvar='mpg')
+    b <- brushedPoints(mtcars, input$mouse_brush,xvar='wt',yvar='mpg')
+    df <- rbind(a,b)
     df
   })
   

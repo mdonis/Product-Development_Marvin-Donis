@@ -23,12 +23,21 @@ class RoleName(str, Enum):
     writer = 'Writer'
     reader = 'Reader'
     
-    
+class OperationName(str, Enum):
+    summ = 'Suma'
+    rest = 'Resta'
+    mult = 'Multiplicación'
+    div = 'División'
+
 class Item(BaseModel):
     name: str
     description: Optional[str] = None
     price: float
     tax: Optional[float] = None
+    
+class Operations(BaseModel):
+    Number1: float
+    Number2: float
 
 @app.get('/')
 def root():
@@ -140,12 +149,71 @@ def get_csv():
 
     return response
 
-
-
+# RESOLUCIÓN DE TAREA:
     
+@app.post('/operations/{op_name}')
+def aritmethic_operation(numbers: Operations, op_name: OperationName):
+    if op_name == "Suma":
+        return {
+            'Operation': op_name,
+            'Number 1': numbers.Number1,
+            'Number 2': numbers.Number2,
+            'Result': numbers.Number1 + numbers.Number2,
+            }
+    elif op_name == "Resta":
+        return {
+            'Operation': op_name,
+            'Number 1': numbers.Number1,
+            'Number 2': numbers.Number2,
+            'Result': numbers.Number1 - numbers.Number2,
+            }
+    elif op_name == "Multiplicación":
+        return {
+            'Operation': op_name,
+            'Number 1': numbers.Number1,
+            'Number 2': numbers.Number2,
+            'Result': numbers.Number1 * numbers.Number2,
+            }
+    elif op_name == "División":
+        return {
+            'Operation': op_name,
+            'Number 1': numbers.Number1,
+            'Number 2': numbers.Number2,
+            'Result': numbers.Number1 / numbers.Number2,
+            }
+    
+@app.get('/operations/{op_name}')
+def aritmethic_operation_get(op_name: OperationName, number1: float, number2: float):
+    if op_name == "Suma":
+        return {
+            'Operation': op_name,
+            'Number 1': number1,
+            'Number 2': number2,
+            'Result': number1 + number2,
+            }
+    elif op_name == "Resta":
+        return {
+            'Operation': op_name,
+            'Number 1': number1,
+            'Number 2': number2,
+            'Result': number1 - number2,
+            }
+    elif op_name == "Multiplicación":
+        return {
+            'Operation': op_name,
+            'Number 1': number1,
+            'Number 2': number2,
+            'Result': number1 * number2,
+            }
+    elif op_name == "División":
+        return {
+            'Operation': op_name,
+            'Number 1': number1,
+            'Number 2': number2,
+            'Result': number1 / number2,
+            }
 
-#agregar 4 operaciones, suma, resta, mult, división (con post y con get)
-#subir a github
+
 
 
 

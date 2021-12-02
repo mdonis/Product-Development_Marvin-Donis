@@ -12,11 +12,11 @@ shinyUI(fluidPage(
     sidebarPanel(
       
       sliderInput(
-        'bins',
-        'Number of bins:',
-        min = 1,
-        max = 50,
-        value = 30
+        'slider1',
+        'Seleccione Nivel de Energía',
+        min = -27965,
+        max = 340326,
+        value = c(1000,250000)
         ),
       
       selectInput(
@@ -30,7 +30,7 @@ shinyUI(fluidPage(
         'Seleccione Rango de Fechas',
         min = '2000-01-01',
         max = today(),
-        start = today()-30,
+        start = today()-1000,
         end = today(),
         language = 'es',
         weekstart = 1,
